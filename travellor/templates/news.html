@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}News{% endblock title %}
+
+
+{% block body %}
+<!-- Home Slider -->
+	<div class="home">
+
+		<!-- Home Slider -->
+		<div class="home_slider_container">
+			<div class="owl-carousel owl-theme home_slider">
+
+				<!-- Slide -->
+				<div class="owl-item">
+					<div class="background_image" style="background-image:url({% static 'images/news.jpg' %})"></div>
+					<div class="home_slider_content_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_slider_content">
+										<!--<div class="home_title"><h2>Let us take you away</h2></div>-->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- home slider ends here-->
+<!-- Search -->
+
+	<div class="home_search">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="home_search_container">
+						<div class="home_search_title">Search for your trip</div>
+						<div class="home_search_content">
+							<form action="search" class="home_search_form" id="home_search_form" method="post">
+								{% csrf_token %}
+								<div class="d-flex flex-lg-row flex-column align-items-start justify-content-lg-between justify-content-start">
+									<input type="text" name="city" class="search_input search_input_1" placeholder="City" required="required">
+									<input type="text" name="depart" class="search_input search_input_2" placeholder="Departure">
+									<input type="text" name="arrive" class="search_input search_input_3" placeholder="Arrival">
+									<input type="text" name="budget" class="search_input search_input_4" placeholder="Budget">
+									<button class="home_search_button" type="submit">search</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- search ends here -->
+	<!-- News -->
+
+	<div class="news">
+		<div class="container">
+			<div class="row">
+
+				<!-- News Container -->
+				<div class="col-lg-8">
+					<div class="news_container">
+						
+						<!-- News Post -->
+						{% for newz in nws %}
+						<div class="news_post">
+							<div class="news_post_image"><img src="{{newz.news_img.url}}" alt=""></div>
+							<div class="news_post_content">
+								<div class="news_post_date d-flex flex-row align-items-end justify-content-start">
+									<div>{{newz.news_date|date:"d"}}</div>
+									<div>{{newz.news_date|date:"F"}}</div>
+								</div>
+								<div class="news_post_title"><a href="#">{{newz.news_header}}</a></div>
+								<div class="news_post_category">
+									<ul>
+										<li><a href="#">lifestyle & travel</a></li>
+									</ul>
+								</div>
+								<div class="news_post_text">
+									<p>{{newz.news_description|safe|truncatewords:"30"}}</p>
+								</div>
+								<div class="news_post_link mt-1"><a href="#">Read More</a></div>
+							</div>
+						</div>
+						{% endfor %}
+
+
+					</div>
+
+					<!-- Pagination -->
+					<div class="pagination mt-1">
+						<ul class="d-flex flex-row align-items-start justify-content-start">
+							<!--<li class="active"><a href="#">1.</a></li>
+							<li><a href="#">2.</a></li>
+							<li><a href="#">3.</a></li>
+							<li><a href="#">4.</a></li>
+							<li><a href="#">5.</a></li>-->
+							<li class="page-item">  <!-- Jump to Prvious Page -->
+							  {% if nws.has_previous %}
+								 <li> <a href="?page={{ nws.previous_page_number }}">
+								 <span aria-hidden="true">‹</span></a>
+							  {% else %}
+								  <li><a>‹</a>
+							  {% endif %}
+							</li>
+							 {% for page in nws.paginator.page_range %}
+								{% if page == nws.number %}
+								<li class="active"><a href="?page={{page}}">{{page}}</a>
+								{% else %}
+								<li><a href="?page={{page}}">{{page}}</a>
+								{% endif %}
+							{% endfor %}
+							<li >  <!-- Jump to Next Page -->
+							  {% if nws.has_next %}
+								<li > <a href="?page={{ nws.next_page_number }}">›</a></li>
+							  {% else %}
+								  <li><a>›</a>
+							  {% endif %}
+							</li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- News Sidebar -->
+				<div class="col-lg-4">
+					<div class="news_sidebar">
+
+						<!-- Categories -->
+						<div class="categories">
+							<div class="sidebar_title">Categories</div>
+							<div class="sidebar_list">
+								<ul>
+									{% for cats in cat %}
+									<li><a href="#"><div class="d-flex flex-row align-items-start justify-content-start">
+										{{cats.cat_name}}<span class="ml-auto">(09)</span></div></a></li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+
+						<!-- Latest News -->
+						<div class="latest">
+							<div class="sidebar_title">Latest News</div>
+							<div class="latest_container">
+								
+								<!-- Latest Post -->
+								{% for newz_lat in nws_latest %}
+								<div class="latest_post d-flex flex-row align-items-start justify-content-start">
+									<div class="latest_post_image"><img src="{{newz_lat.news_img.url}}" alt="imgnews"></div>
+									<div class="latest_post_content">
+										<div class="latest_post_date d-flex flex-row align-items-end justify-content-start">
+											<div class="latest_post_day">{{newz_lat.news_date|date:"d"}}</div>
+											<div class="latest_post_month">{{newz_lat.news_date|date:"F"}}</div>
+										</div>
+										<div class="latest_post_title"><a href="#">{{ newz_lat.news_header}}</a></div>
+										<div class="latest_post_text"><p>Pellentesque sit amet..</p></div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+
+						<div class="travello">
+							<div class="background_image" style="background-image:url({{baseUrl}}/travello.jpg)"></div>
+							<div class="travello_content">
+								<div class="travello_content_inner">
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+							<div class="travello_container">
+								<a href="#">
+									<div class="d-flex flex-column align-items-center justify-content-end">
+										<span class="travello_title">Get a 20% Discount</span>
+										<span class="travello_subtitle">Buy Your Vacation Online Now</span>
+									</div>
+								</a>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+{% endblock body %}

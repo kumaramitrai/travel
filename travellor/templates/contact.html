@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}Contact{% endblock title %}
+
+
+{% block body %}
+<!-- Home Slider -->
+	<div class="home">
+
+		<!-- Home Slider -->
+		<div class="home_slider_container">
+			<div class="owl-carousel owl-theme home_slider">
+
+				<!-- Slide -->
+				<div class="owl-item">
+					<div class="background_image" style="background-image:url({% static 'images/destination_3.jpg' %})"></div>
+					<div class="home_slider_content_container">
+						<div class="container">
+							<div class="row">
+								<div class="col">
+									<div class="home_slider_content">
+										<!--<div class="home_title"><h2>Let us take you away</h2></div>-->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- home slider ends here-->
+<!-- Search -->
+
+	<div class="home_search">
+		<div class="container">
+			<div class="row">
+				<div class="col">
+					<div class="home_search_container">
+						<div class="home_search_title">Search for your trip</div>
+						<div class="home_search_content">
+							<form action="search" class="home_search_form" id="home_search_form" method="post">
+								{% csrf_token %}
+								<div class="d-flex flex-lg-row flex-column align-items-start justify-content-lg-between justify-content-start">
+									<input type="text" name="city" class="search_input search_input_1" placeholder="City" required="required">
+									<input type="text" name="depart" class="search_input search_input_2" placeholder="Departure">
+									<input type="text" name="arrive" class="search_input search_input_3" placeholder="Arrival">
+									<input type="text" name="budget" class="search_input search_input_4" placeholder="Budget">
+									<button class="home_search_button" type="submit">search</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- search ends here -->
+	<!-- Contact -->
+
+	<div class="contact">
+		<div class="container">
+			<div class="row">
+
+				<!-- Get in touch -->
+				<div class="col-lg-6">
+					<div class="contact_content">
+						<div class="contact_title">Get in touch with us</div>
+						<div class="contact_text">
+							<p>Pellentesque sit amet elementum ccumsan sit amet mattis eget, tristique at leo. Vivamus massa.Tempor massa et laoreet. Pellentesque sit amet elementum ccumsan sit amet mattis eget, tristique at leo. Vivamus massa.</p>
+						</div>
+						<div class="contact_list">
+							<ul>
+								<li>
+									<div>address:</div>
+									<div>1481 Creekside Lane Avila Beach, CA 931</div>
+								</li>
+								<li>
+									<div>phone:</div>
+									<div>+53 345 7953 32453</div>
+								</li>
+								<li>
+									<div>email:</div>
+									<div>yourmail@gmail.com</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div>
+							{% for message in messages %}
+								<h3>{{message}}</h3>
+							{% endfor %}
+    					</div>
+				<!-- Contact Form -->
+				<div class="col-lg-6">
+					<div class="contact_form_container">
+						<!--<form action="contacts" method="post" id="contact_form" class="contact_form">
+							{% csrf_token %}
+							<label>Name</label>
+							<div style="margin-bottom: 18px">{{ form.Name }}<div class="input_border"></div></div>
+							<div class="row">
+								<div class="col-lg-6" style="margin-bottom: 18px">
+									<label>Email</label>
+									<div>{{ form.Email }}<div class="input_border"></div></div>
+								</div>
+								<div class="col-lg-6" style="margin-bottom: 18px">
+									<label>Subject</label>
+									<div>{{ form.Subject }}<div class="input_border"></div></div>
+								</div>
+							</div>
+							<label>Message</label>
+							<div>{{ form.Message }}<div class="input_border" style="bottom:3px"></div></div>
+							<button class="contact_button">send</button>
+						</form>-->
+						<form action="contacts" method="post" id="contact_form" class="contact_form">
+							{% csrf_token %}
+							<div style="margin-bottom: 18px">{% render_field form.Name|add_class:"contact_input contact_input_name inpt" type="text" placeholder="Name" %}<div class="input_border"></div></div>
+							<div class="row">
+								<div class="col-lg-6" style="margin-bottom: 18px">
+									<div>{% render_field form.Email|add_class:"contact_input contact_input_email inpt" type="email" placeholder="Email" %}<div class="input_border"></div></div>
+								</div>
+								<div class="col-lg-6" style="margin-bottom: 18px">
+									<div>{% render_field form.Subject|add_class:"contact_input contact_input_subject inpt" type="text" placeholder="Subject" %}<div class="input_border"></div></div>
+								</div>
+							</div>
+							<div>{% render_field form.Message|add_class:"contact_textarea contact_input inpt" type="text" placeholder="Message" %}<div class="input_border" style="bottom:3px"></div></div>
+							<button class="contact_button">send</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<
+	<!-- Map -->
+
+	<div class="contact_map">
+		<!-- Google Map -->
+		<div class="map">
+			<div id="google_map" class="google_map">
+				<div class="map_container">
+					<div id="map"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+{% endblock body %}
